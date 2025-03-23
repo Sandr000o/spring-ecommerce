@@ -3,6 +3,7 @@ package com.curso.ecommerce.controller;
 
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
+import com.curso.ecommerce.service.CargarImagenService;
 import com.curso.ecommerce.service.ProductoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -21,6 +24,9 @@ public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private CargarImagenService cargarImagenService;
 
     @GetMapping("")
     public String show(Model model) {
@@ -34,11 +40,28 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarProducto(Producto producto) {
+    public String guardarProducto(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
         LOGGER.info("Producto guardado" + producto);
         Usuario u = new Usuario(1, "", "", "", "", "", "", "");
         producto.setUsuario(u);
         producto.setUsuario(u);
+
+        //Carga de imagen
+        //Hacemos la validacion cuando se crea un producto
+        if(producto.getId()==null){
+            String nombreImagen=cargarImagenService.cargarImagen(file);
+            producto.setImagen(nombreImagen);
+        }else{
+            //En el caso de editar un producto pero no se cambia la imagen
+            if(file.isEmpty()){
+                Producto p = new Producto();
+                p=productoService.getProductoById(producto.getId()).get();
+                producto.setImagen(p.getImagen());
+            }else{
+                String nombreImagen=cargarImagenService.cargarImagen(file);
+                producto.setImagen(nombreImagen);
+            }
+        }
         productoService.saveProducto(producto);
 
         return "redirect:/productos";
