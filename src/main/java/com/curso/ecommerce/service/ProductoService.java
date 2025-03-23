@@ -4,6 +4,7 @@ package com.curso.ecommerce.service;
 import com.curso.ecommerce.model.Producto;
 
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductoService {
@@ -11,5 +12,6 @@ public interface ProductoService {
     public Optional<Producto> getProductoById(Integer id);
     public void updateProducto(Producto producto);
     public void deleteProducto(Integer id);
+    public List<Producto> getProductos();
 
 }
