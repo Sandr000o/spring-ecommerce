@@ -40,28 +40,20 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarProducto(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
+    public String guardarProducto(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
         LOGGER.info("Producto guardado" + producto);
         Usuario u = new Usuario(1, "", "", "", "", "", "", "");
-        producto.setUsuario(u);
         producto.setUsuario(u);
 
         //Carga de imagen
         //Hacemos la validacion cuando se crea un producto
-        if(producto.getId()==null){
-            String nombreImagen=cargarImagenService.cargarImagen(file);
+        if (producto.getId() == null) {
+            String nombreImagen = cargarImagenService.cargarImagen(file);
             producto.setImagen(nombreImagen);
-        }else{
-            //En el caso de editar un producto pero no se cambia la imagen
-            if(file.isEmpty()){
-                Producto p = new Producto();
-                p=productoService.getProductoById(producto.getId()).get();
-                producto.setImagen(p.getImagen());
-            }else{
-                String nombreImagen=cargarImagenService.cargarImagen(file);
-                producto.setImagen(nombreImagen);
-            }
+        } else {
+
         }
+
         productoService.saveProducto(producto);
 
         return "redirect:/productos";
@@ -79,7 +71,27 @@ public class ProductoController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarProducto(Producto producto) {
+    public String actualizarProducto(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+        Producto p = new Producto();
+        p = productoService.getProductoById(producto.getId()).get();
+
+        //En el caso de editar un producto pero no se cambia la imagen
+        if (file.isEmpty()) {
+
+            producto.setImagen(p.getImagen());
+        } else {
+
+           p=productoService.getProductoById(producto.getId()).get();
+
+            //Eliminar imagen cuando no sea la que se encuentra por defecto
+            if (!p.getImagen().equals("default.jpg")) {
+                cargarImagenService.eliminarImagen(p.getImagen());
+            }
+            String nombreImagen = cargarImagenService.cargarImagen(file);
+            producto.setImagen(nombreImagen);
+
+        }
+        producto.setUsuario(p.getUsuario());
         productoService.updateProducto(producto);
         return "redirect:/productos";
     }
@@ -87,7 +99,15 @@ public class ProductoController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Integer id) {
+        Producto p = new Producto();
+        p = productoService.getProductoById(id).get();
+
+        //Eliminar imagen cuando no sea la que se encuentra por defecto
+        if (!p.getImagen().equals("default.jpg")) {
+            cargarImagenService.eliminarImagen(p.getImagen());
+        }
         productoService.deleteProducto(id);
+
         return "redirect:/productos";
     }
 
