@@ -33,7 +33,7 @@
     </h1>
 
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
       <li class="breadcrumb-item active">Producto</li>
     </ol>
 
@@ -42,7 +42,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-lg-6">
-            <a href="#"> <img class="img-fluid rounded" src="http://placehold.it/500x325" alt="">
+            <a href="#"> <img class="img-fluid rounded" th:src="@{/images/{img} (img=${producto.imagen})}" alt="">
             </a>
           </div>
           <div class="col-lg-6">
@@ -51,15 +51,15 @@
 
               <ul class="list-group">
                 <li class="list-group-item">
-                  <h5>Precio: <h5 th:text="${producto.precio}"></h5> </h5>
+                   <h5 th:text="'Precio : '+${producto.precio}"></h5>
                 </li>
                 <li class="list-group-item">
-                  <p>Descripción:</p>
+                  <p th:text="'Descripción : '+${producto.descripcion}"></p>
                 </li>
                 <li class="list-group-item">
                   <h6>
                     Cantidad: <input type="number" id="cantidad" name="cantidad" autocomplete="off" min="1" max="5"
-                      value="1">
+                      th:value="${producto.cantidad}">
                   </h6>
                 </li>
               </ul>
