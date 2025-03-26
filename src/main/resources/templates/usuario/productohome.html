@@ -46,7 +46,7 @@
             </a>
           </div>
           <div class="col-lg-6">
-            <form action="carrito.html" method="POST">
+            <form th:action="@{/cart}" method="POST">
               <h2 class="card-title" th:text="${producto.nombre}"></h2>
 
               <ul class="list-group">
@@ -80,9 +80,7 @@
   <!-- Footer -->
  <div th:include="administrador/template_admin.html::footer"></div>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
 </body>
 
