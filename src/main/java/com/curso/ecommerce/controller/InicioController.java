@@ -1,5 +1,7 @@
 package com.curso.ecommerce.controller;
 
+import com.curso.ecommerce.model.DetalleOrden;
+import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.service.ProductoService;
 import org.slf4j.Logger;
@@ -7,11 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +21,12 @@ public class InicioController {
 
     private Logger LOGGER = LoggerFactory.getLogger(InicioController.class);
 
+    //Alamancer los detalles de cada orden
+    List<DetalleOrden> detalles= new ArrayList<>();
+
+    //Datos de la orden
+    Orden orden= new Orden();
+
     @Autowired
     private ProductoService productoService;
     @GetMapping("")
@@ -29,6 +35,7 @@ public class InicioController {
         model.addAttribute("listaProductos", listaProductos);
         return "usuario/home";
     }
+
 
     @GetMapping("productohome/{id}")
     public String verProducto(@PathVariable Integer id, Model model) {
@@ -43,7 +50,16 @@ public class InicioController {
 
 
     @PostMapping("/cart")
-    public String addCart(){
+    public String agregarAlCarrito(@RequestParam Integer id,@RequestParam Integer cantidad) {
+        DetalleOrden detalleOrden=new DetalleOrden();
+        Producto producto=new Producto();
+        double sumaTotal=0;
+
+        Optional<Producto> productoOptional=productoService.getProductoById(id);
+        LOGGER.info("Producto añadido: " + productoOptional.get());
+        LOGGER.info("Cantidad: " + cantidad);
+        producto=productoOptional.get();
+
         return "usuario/carrito";
     }
 }
