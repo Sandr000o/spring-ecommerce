@@ -78,4 +78,26 @@ public class InicioController {
 
         return "usuario/carrito";
     }
+
+    //Método para quitar un producto del carrito
+
+    @GetMapping("/eliminar/carrito/{id}")
+    public String eliminarProductos(@PathVariable Integer id, Model model) {
+        List<DetalleOrden>ordenesNuevas = new ArrayList<DetalleOrden>();
+
+        for (DetalleOrden detalleOrden : detalles) {
+            if(detalleOrden.getProducto().getId()!=id){
+                ordenesNuevas.add(detalleOrden);
+            }
+        }
+
+        //Nueva lista con productos actuales en el carrito
+        detalles=ordenesNuevas;
+        double sumaTotal=0;
+        sumaTotal=ordenesNuevas.stream().mapToDouble(dto->dto.getTotal()).sum();
+        orden.setTotal(sumaTotal);
+        model.addAttribute("detalles", detalles=ordenesNuevas);
+        model.addAttribute("orden", orden);
+        return "usuario/carrito";
+    }
 }
