@@ -14,7 +14,7 @@ public class Orden {
     private Date fechaCreacion;
     private Date fechaRecepcion;
     private String imagen;
-    private double precio;
+    private double total;
 
     @OneToOne(mappedBy = "orden")
     private DetalleOrden detalleOrden;
@@ -26,22 +26,22 @@ public class Orden {
     public Orden() {
     }
 
-    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, String imagen, double precio) {
+    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, String imagen, double total) {
         this.id = id;
         this.numero = numero;
         this.fechaCreacion = fechaCreacion;
         this.fechaRecepcion = fechaRecepcion;
         this.imagen = imagen;
-        this.precio = precio;
+        this.total = total;
     }
 
-    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, String imagen, double precio, DetalleOrden detalleOrden, Usuario usuario) {
+    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, String imagen, double total, DetalleOrden detalleOrden, Usuario usuario) {
         this.id = id;
         this.numero = numero;
         this.fechaCreacion = fechaCreacion;
         this.fechaRecepcion = fechaRecepcion;
         this.imagen = imagen;
-        this.precio = precio;
+        this.total = total;
         this.detalleOrden = detalleOrden;
         this.usuario = usuario;
     }
@@ -87,12 +87,12 @@ public class Orden {
         this.imagen = imagen;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getTotal() {
+        return total;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public DetalleOrden getDetalleOrden() {
@@ -121,6 +121,6 @@ public class Orden {
                 ", fechaCreacion=" + fechaCreacion +
                 ", fechaRecepcion=" + fechaRecepcion +
                 ", imagen='" + imagen + '\'' +
-                ", precio=" + precio;
+                ", total=" + total;
     }
 }

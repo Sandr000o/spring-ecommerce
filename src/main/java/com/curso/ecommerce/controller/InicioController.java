@@ -50,7 +50,7 @@ public class InicioController {
 
 
     @PostMapping("/cart")
-    public String agregarAlCarrito(@RequestParam Integer id,@RequestParam Integer cantidad) {
+    public String agregarAlCarrito(@RequestParam Integer id,@RequestParam Integer cantidad,Model model) {
         DetalleOrden detalleOrden=new DetalleOrden();
         Producto producto=new Producto();
         double sumaTotal=0;
@@ -59,6 +59,22 @@ public class InicioController {
         LOGGER.info("Producto añadido: " + productoOptional.get());
         LOGGER.info("Cantidad: " + cantidad);
         producto=productoOptional.get();
+
+        detalleOrden.setCantidad(cantidad);
+        detalleOrden.setPrecio(producto.getPrecio());
+        detalleOrden.setNombre(producto.getNombre());
+        detalleOrden.setPrecio(producto.getPrecio());
+        detalleOrden.setProducto(producto);
+        detalleOrden.setTotal(producto.getPrecio()*cantidad);
+        detalles.add(detalleOrden);
+
+        sumaTotal=detalles.stream().mapToDouble(dto->dto.getTotal()).sum();
+        orden.setTotal(sumaTotal);
+        LOGGER.info("Detalle Orden: " + detalleOrden);
+        LOGGER.info("Orden: " + orden);
+
+        model.addAttribute("detalles", detalles);
+        model.addAttribute("orden", orden);
 
         return "usuario/carrito";
     }
