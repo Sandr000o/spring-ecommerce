@@ -50,8 +50,6 @@ public class ProductoController {
         if (producto.getId() == null) {
             String nombreImagen = cargarImagenService.cargarImagen(file);
             producto.setImagen(nombreImagen);
-        } else {
-
         }
 
         productoService.saveProducto(producto);
@@ -81,7 +79,7 @@ public class ProductoController {
             producto.setImagen(p.getImagen());
         } else {
 
-           p=productoService.getProductoById(producto.getId()).get();
+            p = productoService.getProductoById(producto.getId()).get();
 
             //Eliminar imagen cuando no sea la que se encuentra por defecto
             if (!p.getImagen().equals("default.jpg")) {

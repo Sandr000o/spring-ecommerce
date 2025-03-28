@@ -66,7 +66,15 @@ public class InicioController {
         detalleOrden.setPrecio(producto.getPrecio());
         detalleOrden.setProducto(producto);
         detalleOrden.setTotal(producto.getPrecio()*cantidad);
-        detalles.add(detalleOrden);
+
+        //Validación para evitar que el producto no se añada más de una vez
+        Integer idProducto=producto.getId();
+        boolean ingresado=detalles.stream().anyMatch(p->p.getProducto().getId()==idProducto);
+
+        if(!ingresado){
+            detalles.add(detalleOrden);
+        }
+
 
         sumaTotal=detalles.stream().mapToDouble(dto->dto.getTotal()).sum();
         orden.setTotal(sumaTotal);
@@ -79,6 +87,12 @@ public class InicioController {
         return "usuario/carrito";
     }
 
+    @GetMapping("/mostrarCarrito")
+    public String mostrarCarrito(Model model) {
+        model.addAttribute("detalles", detalles);
+        model.addAttribute("orden", orden);
+        return "/usuario/carrito";
+    }
     //Método para quitar un producto del carrito
 
     @GetMapping("/eliminar/carrito/{id}")
