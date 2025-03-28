@@ -4,9 +4,10 @@ import com.curso.ecommerce.model.DetalleOrden;
 import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
-import com.curso.ecommerce.repository.IUsuarioRepository;
+import com.curso.ecommerce.service.IDetalleOrdenService;
+import com.curso.ecommerce.service.IOrdenService;
 import com.curso.ecommerce.service.IProductoService;
-import com.curso.ecommerce.service.UsuarioServiceImpl;
+import com.curso.ecommerce.service.IUsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +33,20 @@ public class InicioController {
     Orden orden = new Orden();
 
     @Autowired
-    private UsuarioServiceImpl usuarioService;
+    private IUsuarioService usuarioService;
+
     @Autowired
-    private IProductoService IProductoService;
+    private IProductoService productoService;
+
+    @Autowired
+    private IOrdenService ordenService;
+
+    @Autowired
+    private IDetalleOrdenService detalleOrdenService;
 
     @GetMapping("")
     public String inicio(Model model) {
-        List<Producto> listaProductos = IProductoService.getProductos();
+        List<Producto> listaProductos = productoService.getProductos();
         model.addAttribute("listaProductos", listaProductos);
         return "usuario/home";
     }
@@ -47,7 +56,7 @@ public class InicioController {
     public String verProducto(@PathVariable Integer id, Model model) {
         LOGGER.info("Id del producto: " + id);
         Producto producto = new Producto();
-        Optional<Producto> productoOptional = IProductoService.getProductoById(id);
+        Optional<Producto> productoOptional = productoService.getProductoById(id);
         producto = productoOptional.get();
         model.addAttribute("producto", producto);
         LOGGER.info("Producto: " + producto);
@@ -61,7 +70,7 @@ public class InicioController {
         Producto producto = new Producto();
         double sumaTotal = 0;
 
-        Optional<Producto> productoOptional = IProductoService.getProductoById(id);
+        Optional<Producto> productoOptional = productoService.getProductoById(id);
         LOGGER.info("Producto añadido: " + productoOptional.get());
         LOGGER.info("Cantidad: " + cantidad);
         producto = productoOptional.get();
@@ -123,10 +132,36 @@ public class InicioController {
 
     @GetMapping("/orden")
     public String orden(Model model) {
-        Usuario usuario= usuarioService.findUserById(1).get();
+        Usuario usuario = usuarioService.findUserById(1).get();
         model.addAttribute("detalles", detalles);
         model.addAttribute("orden", orden);
         model.addAttribute("usuario", usuario);
         return "/usuario/resumenorden";
+    }
+
+    @GetMapping("/guardarOrden")
+    public String guardarOrden(Model model) {
+        Date fechaCreacion= new Date();
+        orden.setFechaCreacion(fechaCreacion);
+        orden.setNumero(ordenService.generarNumeroOrden());
+
+        //El usuario que genera la orden
+        Usuario usuario = usuarioService.findUserById(1).get();
+        orden.setUsuario(usuario);
+        ordenService.guardarOrden(orden);
+
+        //Guardar detalles
+        for (DetalleOrden detalleOrden : detalles) {
+            detalleOrden.setOrden(orden);
+            detalleOrdenService.guardarDetalleOrden(detalleOrden);
+        }
+
+        //Limpiamos la lista y orden
+
+        orden = new Orden();
+        detalles.clear();
+
+
+        return "redirect:/";
     }
 }

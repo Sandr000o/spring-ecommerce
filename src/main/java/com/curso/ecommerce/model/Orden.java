@@ -2,7 +2,9 @@ package com.curso.ecommerce.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ordenes")
@@ -13,11 +15,10 @@ public class Orden {
     private String numero;
     private Date fechaCreacion;
     private Date fechaRecepcion;
-    private String imagen;
     private double total;
 
-    @OneToOne(mappedBy = "orden")
-    private DetalleOrden detalleOrden;
+    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleOrden> detalleOrden = new ArrayList<>();
 
     @ManyToOne
     private Usuario usuario;
@@ -26,21 +27,19 @@ public class Orden {
     public Orden() {
     }
 
-    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, String imagen, double total) {
+    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion,  double total) {
         this.id = id;
         this.numero = numero;
         this.fechaCreacion = fechaCreacion;
         this.fechaRecepcion = fechaRecepcion;
-        this.imagen = imagen;
         this.total = total;
     }
 
-    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, String imagen, double total, DetalleOrden detalleOrden, Usuario usuario) {
+    public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecepcion, double total, List<DetalleOrden> detalleOrden, Usuario usuario) {
         this.id = id;
         this.numero = numero;
         this.fechaCreacion = fechaCreacion;
         this.fechaRecepcion = fechaRecepcion;
-        this.imagen = imagen;
         this.total = total;
         this.detalleOrden = detalleOrden;
         this.usuario = usuario;
@@ -79,13 +78,6 @@ public class Orden {
     }
 
 
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
 
     public double getTotal() {
         return total;
@@ -95,11 +87,11 @@ public class Orden {
         this.total = total;
     }
 
-    public DetalleOrden getDetalleOrden() {
+    public List<DetalleOrden> getDetalleOrden() {
         return detalleOrden;
     }
 
-    public void setDetalleOrden(DetalleOrden detalleOrden) {
+    public void setDetalleOrden(List<DetalleOrden> detalleOrden) {
         this.detalleOrden = detalleOrden;
     }
 
@@ -120,7 +112,6 @@ public class Orden {
                 ", numero='" + numero + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", fechaRecepcion=" + fechaRecepcion +
-                ", imagen='" + imagen + '\'' +
                 ", total=" + total;
     }
 }

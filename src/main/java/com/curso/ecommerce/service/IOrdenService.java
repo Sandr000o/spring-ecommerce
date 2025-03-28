@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface IOrdenService  {
     List<Orden> obtenerOrdenes();
     Orden guardarOrden(Orden orden);
+    String generarNumeroOrden();
 }
