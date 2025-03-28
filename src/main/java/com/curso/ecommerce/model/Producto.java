@@ -18,8 +18,7 @@ public class Producto {
     @ManyToOne
     private Usuario usuario;
 
-    @OneToOne
-    private DetalleOrden detalleOrden;
+
 
     public Producto() {
 
