@@ -3,7 +3,10 @@ package com.curso.ecommerce.controller;
 import com.curso.ecommerce.model.DetalleOrden;
 import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Producto;
-import com.curso.ecommerce.service.ProductoService;
+import com.curso.ecommerce.model.Usuario;
+import com.curso.ecommerce.repository.IUsuarioRepository;
+import com.curso.ecommerce.service.IProductoService;
+import com.curso.ecommerce.service.UsuarioServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +31,13 @@ public class InicioController {
     Orden orden = new Orden();
 
     @Autowired
-    private ProductoService productoService;
+    private UsuarioServiceImpl usuarioService;
+    @Autowired
+    private IProductoService IProductoService;
 
     @GetMapping("")
     public String inicio(Model model) {
-        List<Producto> listaProductos = productoService.getProductos();
+        List<Producto> listaProductos = IProductoService.getProductos();
         model.addAttribute("listaProductos", listaProductos);
         return "usuario/home";
     }
@@ -42,7 +47,7 @@ public class InicioController {
     public String verProducto(@PathVariable Integer id, Model model) {
         LOGGER.info("Id del producto: " + id);
         Producto producto = new Producto();
-        Optional<Producto> productoOptional = productoService.getProductoById(id);
+        Optional<Producto> productoOptional = IProductoService.getProductoById(id);
         producto = productoOptional.get();
         model.addAttribute("producto", producto);
         LOGGER.info("Producto: " + producto);
@@ -56,7 +61,7 @@ public class InicioController {
         Producto producto = new Producto();
         double sumaTotal = 0;
 
-        Optional<Producto> productoOptional = productoService.getProductoById(id);
+        Optional<Producto> productoOptional = IProductoService.getProductoById(id);
         LOGGER.info("Producto añadido: " + productoOptional.get());
         LOGGER.info("Cantidad: " + cantidad);
         producto = productoOptional.get();
@@ -118,7 +123,10 @@ public class InicioController {
 
     @GetMapping("/orden")
     public String orden(Model model) {
-
+        Usuario usuario= usuarioService.findUserById(1).get();
+        model.addAttribute("detalles", detalles);
+        model.addAttribute("orden", orden);
+        model.addAttribute("usuario", usuario);
         return "/usuario/resumenorden";
     }
 }

@@ -1,7 +1,7 @@
 package com.curso.ecommerce.service;
 
 import com.curso.ecommerce.model.Producto;
-import com.curso.ecommerce.repository.ProductoRepository;
+import com.curso.ecommerce.repository.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,34 +9,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductoServiceImpl implements ProductoService {
+public class IProductoServiceImpl implements IProductoService {
 
     @Autowired
-    private ProductoRepository productoRepository;
+    private IProductoRepository IProductoRepository;
 
     @Override
     public Producto saveProducto(Producto producto) {
-       return productoRepository.save(producto);
+       return IProductoRepository.save(producto);
     }
 
     @Override
     public Optional<Producto> getProductoById(Integer id) {
-        return productoRepository.findById(id);
+        return IProductoRepository.findById(id);
     }
 
     @Override
     public void updateProducto(Producto producto) {
-        productoRepository.save(producto);
+        IProductoRepository.save(producto);
 
     }
 
     @Override
     public void deleteProducto(Integer id) {
-        productoRepository.deleteById(id);
+        IProductoRepository.deleteById(id);
     }
 
     @Override
     public List<Producto> getProductos() {
-        return productoRepository.findAll();
+        return IProductoRepository.findAll();
     }
 }

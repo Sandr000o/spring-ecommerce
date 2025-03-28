@@ -3,11 +3,10 @@ package com.curso.ecommerce.service;
 
 import com.curso.ecommerce.model.Producto;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductoService {
+public interface IProductoService {
     public Producto saveProducto(Producto producto);
     public Optional<Producto> getProductoById(Integer id);
     public void updateProducto(Producto producto);
