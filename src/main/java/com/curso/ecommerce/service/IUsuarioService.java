@@ -10,4 +10,6 @@ public interface IUsuarioService {
 
     Optional<Usuario> findUserById(Integer id);
 
+    Usuario guardarUsuario(Usuario usuario);
+
 }
