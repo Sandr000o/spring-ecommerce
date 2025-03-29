@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -141,7 +142,7 @@ public class InicioController {
 
     @GetMapping("/guardarOrden")
     public String guardarOrden(Model model) {
-        Date fechaCreacion= new Date();
+        Date fechaCreacion = new Date();
         orden.setFechaCreacion(fechaCreacion);
         orden.setNumero(ordenService.generarNumeroOrden());
 
@@ -163,5 +164,15 @@ public class InicioController {
 
 
         return "redirect:/";
+    }
+
+    @PostMapping("/buscar")
+    public String buscarProducto(@RequestParam String nombre, Model model) {
+        LOGGER.info("Nombre: " + nombre);
+        List<Producto> productos = productoService.getProductos().stream().filter(
+                p -> p.getNombre().contains(nombre)).collect(Collectors.toList());
+
+        model.addAttribute("listaProductos", productos);
+        return "/usuario/home";
     }
 }
