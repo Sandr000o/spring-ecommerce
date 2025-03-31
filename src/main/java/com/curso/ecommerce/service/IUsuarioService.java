@@ -12,4 +12,6 @@ public interface IUsuarioService {
 
     Usuario guardarUsuario(Usuario usuario);
 
+    Optional<Usuario> findUserByEmail(String email);
+
 }
