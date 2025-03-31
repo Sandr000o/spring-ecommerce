@@ -8,6 +8,7 @@ import com.curso.ecommerce.service.IDetalleOrdenService;
 import com.curso.ecommerce.service.IOrdenService;
 import com.curso.ecommerce.service.IProductoService;
 import com.curso.ecommerce.service.IUsuarioService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,10 @@ public class InicioController {
     private IDetalleOrdenService detalleOrdenService;
 
     @GetMapping("")
-    public String inicio(Model model) {
+    public String inicio(Model model, HttpSession session) {
         List<Producto> listaProductos = productoService.getProductos();
         model.addAttribute("listaProductos", listaProductos);
+        LOGGER.info("Usuario : "+session.getAttribute("idUsuario"));
         return "usuario/home";
     }
 
@@ -132,8 +134,8 @@ public class InicioController {
     }
 
     @GetMapping("/orden")
-    public String orden(Model model) {
-        Usuario usuario = usuarioService.findUserById(1).get();
+    public String orden(Model model,HttpSession session) {
+        Usuario usuario = usuarioService.findUserById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
         model.addAttribute("detalles", detalles);
         model.addAttribute("orden", orden);
         model.addAttribute("usuario", usuario);
@@ -141,13 +143,13 @@ public class InicioController {
     }
 
     @GetMapping("/guardarOrden")
-    public String guardarOrden(Model model) {
+    public String guardarOrden(Model model,HttpSession session) {
         Date fechaCreacion = new Date();
         orden.setFechaCreacion(fechaCreacion);
         orden.setNumero(ordenService.generarNumeroOrden());
 
         //El usuario que genera la orden
-        Usuario usuario = usuarioService.findUserById(1).get();
+        Usuario usuario = usuarioService.findUserById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
         orden.setUsuario(usuario);
         ordenService.guardarOrden(orden);
 

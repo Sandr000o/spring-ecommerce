@@ -5,6 +5,8 @@ import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.service.CargarImagenService;
 import com.curso.ecommerce.service.IProductoService;
+import com.curso.ecommerce.service.IUsuarioService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class ProductoController {
     private IProductoService IProductoService;
 
     @Autowired
+    private IUsuarioService IUsuarioService;
+    @Autowired
     private CargarImagenService cargarImagenService;
 
     @GetMapping("")
@@ -40,9 +44,9 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarProducto(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+    public String guardarProducto(Producto producto, @RequestParam("img") MultipartFile file , HttpSession session) throws IOException {
         LOGGER.info("Producto guardado" + producto);
-        Usuario u = new Usuario(1, "", "", "", "", "", "", "");
+        Usuario u = IUsuarioService.findUserById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
         producto.setUsuario(u);
 
         //Carga de imagen
@@ -69,9 +73,10 @@ public class ProductoController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarProducto(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+    public String actualizarProducto(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
         Producto p = new Producto();
         p = IProductoService.getProductoById(producto.getId()).get();
+        p.setUsuario(IUsuarioService.findUserById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get());
 
         //En el caso de editar un producto pero no se cambia la imagen
         if (file.isEmpty()) {
