@@ -50,7 +50,9 @@ public class InicioController {
     public String inicio(Model model, HttpSession session) {
         List<Producto> listaProductos = productoService.getProductos();
         model.addAttribute("listaProductos", listaProductos);
-        LOGGER.info("Usuario : "+session.getAttribute("idUsuario"));
+        //Si hay una sesion mostramos una vista
+        model.addAttribute("sesion", session.getAttribute("idUsuario"));
+
         return "usuario/home";
     }
 
@@ -105,10 +107,13 @@ public class InicioController {
         return "usuario/carrito";
     }
 
-    @GetMapping("/mostrarCarrito")
-    public String mostrarCarrito(Model model) {
+    @GetMapping("/mostrarCarrito" )
+    public String mostrarCarrito(Model model, HttpSession sesion) {
         model.addAttribute("detalles", detalles);
         model.addAttribute("orden", orden);
+
+        //Sesion
+        model.addAttribute("sesion", sesion.getAttribute("idUsuario"));
         return "/usuario/carrito";
     }
     //Método para quitar un producto del carrito
