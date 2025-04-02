@@ -144,6 +144,7 @@ public class InicioController {
         model.addAttribute("detalles", detalles);
         model.addAttribute("orden", orden);
         model.addAttribute("usuario", usuario);
+
         return "/usuario/resumenorden";
     }
 
