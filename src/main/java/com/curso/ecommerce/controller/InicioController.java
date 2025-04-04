@@ -58,11 +58,12 @@ public class InicioController {
 
 
     @GetMapping("productohome/{id}")
-    public String verProducto(@PathVariable Integer id, Model model) {
+    public String verProducto(@PathVariable Integer id, Model model, HttpSession sesion) {
         LOGGER.info("Id del producto: " + id);
         Producto producto = new Producto();
         Optional<Producto> productoOptional = productoService.getProductoById(id);
         producto = productoOptional.get();
+        model.addAttribute("sesion", sesion.getAttribute("idUsuario"));
         model.addAttribute("producto", producto);
         LOGGER.info("Producto: " + producto);
         return "usuario/productohome";
