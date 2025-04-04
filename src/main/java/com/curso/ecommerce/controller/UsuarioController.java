@@ -57,4 +57,11 @@ public class UsuarioController {
         return "redirect:/";
     }
 
+    @GetMapping("/historialCompras")
+    public String historialCompras(Model model, HttpSession session) {
+        LOGGGER.info("Historial de compras");
+        model.addAttribute("sesion", session.getAttribute("idUsuario"));
+        return "usuario/compras";
+    }
+
 }

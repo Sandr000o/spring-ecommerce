@@ -22,7 +22,9 @@
 <body>
 
 <!-- Navigation -->
-<div th:include="usuario/template_usuario.html::header"></div>
+<div th:include="usuario/template_usuario.html::header" th:if="${session==null}"></div>
+<div th:include="usuario/template_usuario.html::header-user" th:unless="${session==null}"></div>
+
 <!-- Page Content -->
 <div class="container">
 
@@ -92,14 +94,6 @@
     </div>
 </div>
 <!-- /.container -->
-
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Spring eCommerce 2020</p>
-    </div>
-    <!-- /.container -->
-</footer>
 
 <!-- Footer -->
 <div th:include="usuario/template_usuario.html::footer"></div>
