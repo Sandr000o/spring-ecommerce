@@ -55,10 +55,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>4555454</td>
-                            <td>Fecha de Compra</td>
-                            <td>Total</td>
+                        <tr th:each="compras :${listaOrdenes}">
+                            <td th:text="compras.numero">4555454</td>
+                            <td th:text="'Fecha de compra  : '+compras.fechaCreacion">Fecha de Compra</td>
+                            <td th : th:text="'Total : S/.'+${compras.total}">Total</td>
                             <td><a href="detallecompra.html" class="btn btn-success">Ver Detalle</a></td>
                         </tr>
                         </tbody>

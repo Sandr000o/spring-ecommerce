@@ -1,6 +1,8 @@
 package com.curso.ecommerce.controller;
 
+import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Usuario;
+import com.curso.ecommerce.repository.IOrdenRepository;
 import com.curso.ecommerce.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -20,6 +23,9 @@ public class UsuarioController {
     private final Logger LOGGGER = LoggerFactory.getLogger(UsuarioController.class);
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private IOrdenRepository ordenRepository;
 
     @GetMapping("/registro")
     public String registroUsuario() {
@@ -60,7 +66,10 @@ public class UsuarioController {
     @GetMapping("/historialCompras")
     public String historialCompras(Model model, HttpSession session) {
         LOGGGER.info("Historial de compras");
-        model.addAttribute("sesion", session.getAttribute("idUsuario"));
+        model.addAttribute("session",session.getAttribute("idUsuario"));
+        Usuario usuario=usuarioService.findUserById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
+        List<Orden> listaOrdenes = ordenRepository.findByUsuario(usuario);
+        model.addAttribute("listaOrdenes", listaOrdenes);
         return "usuario/compras";
     }
 
