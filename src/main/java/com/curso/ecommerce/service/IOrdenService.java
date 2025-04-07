@@ -5,6 +5,7 @@ import com.curso.ecommerce.model.Usuario;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface IOrdenService  {
@@ -12,4 +13,5 @@ public interface IOrdenService  {
     Orden guardarOrden(Orden orden);
     String generarNumeroOrden();
     List<Orden> obtenerOrdenesPorUsuario(Usuario usuario);
+    Optional<Orden> findOrdenById(Integer id);
 }

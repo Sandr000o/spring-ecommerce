@@ -1,8 +1,10 @@
 package com.curso.ecommerce.controller;
 
+import com.curso.ecommerce.model.DetalleOrden;
 import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.repository.IOrdenRepository;
+import com.curso.ecommerce.service.IDetalleOrdenService;
 import com.curso.ecommerce.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -71,6 +74,17 @@ public class UsuarioController {
         List<Orden> listaOrdenes = ordenRepository.findByUsuario(usuario);
         model.addAttribute("listaOrdenes", listaOrdenes);
         return "usuario/compras";
+    }
+
+    @GetMapping("/detalleCompra/{id}")
+    public String detalleCompras(@PathVariable Integer id , HttpSession session, Model model) {
+        LOGGGER.info("ID del detalle compra: " + id);
+        Optional<Orden> ordenOptional = ordenRepository.findById(id);
+        LOGGGER.info("Detalles : "+ordenOptional.get().getDetalleOrden());
+        model.addAttribute("detalles", ordenOptional.get().getDetalleOrden());
+        //Sesion
+        model.addAttribute("idUsuario",session.getAttribute("idUsuario"));
+        return "usuario/detalleCompra";
     }
 
 }

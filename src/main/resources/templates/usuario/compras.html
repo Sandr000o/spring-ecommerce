@@ -59,7 +59,7 @@
                             <td th:text="${compras.numero}">4555454</td>
                             <td th:text="${compras.fechaCreacion}">Fecha de Compra</td>
                             <td th : th:text="'S/.'+${compras.total}">Total</td>
-                            <td><a href="detallecompra.html" class="btn btn-success">Ver Detalle</a></td>
+                            <td><a th:href="@{detalleCompra/{id} (id=${compras.id})}" class="btn btn-success">Ver Detalle</a></td>
                         </tr>
                         </tbody>
                     </table>
