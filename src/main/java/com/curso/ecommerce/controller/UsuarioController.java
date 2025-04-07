@@ -66,7 +66,7 @@ public class UsuarioController {
     @GetMapping("/historialCompras")
     public String historialCompras(Model model, HttpSession session) {
         LOGGGER.info("Historial de compras");
-        model.addAttribute("session",session.getAttribute("idUsuario"));
+        model.addAttribute("idUsuario",session.getAttribute("idUsuario"));
         Usuario usuario=usuarioService.findUserById(Integer.parseInt(session.getAttribute("idUsuario").toString())).get();
         List<Orden> listaOrdenes = ordenRepository.findByUsuario(usuario);
         model.addAttribute("listaOrdenes", listaOrdenes);

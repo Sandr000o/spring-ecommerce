@@ -51,8 +51,9 @@ public class InicioController {
         List<Producto> listaProductos = productoService.getProductos();
         model.addAttribute("listaProductos", listaProductos);
         //Si hay una sesion mostramos una vista
-        model.addAttribute("session.id", session.getAttribute("idUsuario"));
+        model.addAttribute("idUsuario", session.getAttribute("idUsuario"));
 
+        LOGGER.info("Inicio principal: "+session.getAttribute("idUsuario"));
         return "usuario/home";
     }
 
@@ -63,7 +64,7 @@ public class InicioController {
         Producto producto = new Producto();
         Optional<Producto> productoOptional = productoService.getProductoById(id);
         producto = productoOptional.get();
-        model.addAttribute("session", sesion.getAttribute("idUsuario"));
+        model.addAttribute("idUsuario", sesion.getAttribute("idUsuario"));
         model.addAttribute("producto", producto);
         LOGGER.info("Producto: " + producto);
         return "usuario/productohome";
@@ -114,7 +115,8 @@ public class InicioController {
         model.addAttribute("orden", orden);
 
         //Sesion
-        model.addAttribute("session", sesion.getAttribute("idUsuario"));
+        model.addAttribute("idUsuario", sesion.getAttribute("idUsuario"));
+        LOGGER.info("Inicio Carrito: "+sesion.getAttribute("idUsuario"));
         return "/usuario/carrito";
     }
     //Método para quitar un producto del carrito
