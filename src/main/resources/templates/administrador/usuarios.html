@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Spring eCommerce</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<div th:include="administrador/template_admin.html::header">
+
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown"><a
+                    class="nav-link dropdown-toggle" href="#"
+                    id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"> ADMIN </a>
+                <div class="dropdown-menu"
+                     aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Productos</a> <a
+                        class="dropdown-item" href="#">Ordenes</a> <a
+                        class="dropdown-item" href="#">Usuarios</a> <a
+                        class="dropdown-item" href="#">Salir</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">
+        Spring eCommerce <small>Productos</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/administrador}">Home</a></li>
+        <li class="breadcrumb-item active">Ver Usuarios</li>
+    </ol>
+    <h2>Usuarios</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Email</th>
+            <th scope="col">Dirección</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${listaUsuarios}">
+            <td th:text="${usuario.nombre}">Nombre</td>
+            <td th:text="${usuario.email}">Email</td>
+            <td th:text="${usuario.direccion}" >Dirección</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<div th:include="administrador/template_admin.html::footer"></div>
+</body>
+
+</html>
