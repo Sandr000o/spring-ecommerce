@@ -15,7 +15,6 @@
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
 
-
     <!-- Custom styles for this template -->
     <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
 
@@ -39,7 +38,8 @@
             </form>
 
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -48,6 +48,7 @@
                                             th:href="@{/mostrarCarrito}">Carrito</a></li>
                     <li class="nav-item"><a class="nav-link"
                                             th:href="@{/usuario/login}">Login</a></li>
+
                 </ul>
             </div>
         </div>
@@ -82,6 +83,7 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" th:href="@{/mostrarCarrito}">Carrito</a>
                             <a class="dropdown-item" th:href="@{/usuario/historialCompras}">Compras</a>
+                            <a class="dropdown-item" th:href="@{/usuario/cerrar}">Cerrar Sesión</a>
                         </div>
 
                     </li>
@@ -91,7 +93,6 @@
     </nav>
 
 </div>
-
 
 
 <div th:fragment="footer">
@@ -109,8 +110,6 @@
 
 
 <!-- Bootstrap core JavaScript -->
-
-
 
 
 </body>
